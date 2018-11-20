@@ -9,18 +9,34 @@
 #include <RemoteReceiver.h>
 
 void setup() {
-  Serial.begin(115200);
-  
+  while (!Serial)
+{
+    // do nothing
+} ;
+  Serial.begin(57600);
+    Serial.println("Serial port inited (old RemoteReceiver");
   // Initialize receiver on interrupt 0 (= digital pin 2), calls the callback "showCode"
   // after 3 identical codes have been received in a row. (thus, keep the button pressed
   // for a moment)
   //
   // See the interrupt-parameter of attachInterrupt for possible values (and pins)
   // to connect the receiver.
-  RemoteReceiver::init(0, 3, showCode);
+  // - interrupt
+  // - minRepeat (default was 3)
+  // - callback
+  RemoteReceiver::init(digitalPinToInterrupt(3),1, showCode);
+    Serial.println("old RemoteReceiver inited");
 }
+int i=0;
+
+
+
+
+
 
 void loop() {
+  delay(3000);
+  Serial.println(i++);
 }
 
 // Callback function is called only when a valid code is received.
@@ -34,5 +50,6 @@ void showCode(unsigned long receivedCode, unsigned int period) {
   Serial.print(period);
   Serial.println("us.");
 }
+
 
 
